@@ -47,7 +47,7 @@ fn print_accounts_balance(accounts_balance: Vec<ClientAccount>) {
 
     for account in accounts_balance {
         println!(
-            "\n{},{:.4},{:.4},{:.4},{}",
+            "{},{:.4},{:.4},{:.4},{}",
             account.client, account.available, account.held, account.total, account.locked
         );
     }
