@@ -15,8 +15,8 @@ fn main() -> Result<(), Box<dyn Error>> {
     let app = get_command()?;
     let matches = app.get_matches();
 
+    // Get file path
     let file_path = get_argument_value(&matches, "file", None)?;
-
     let br = BufReader::new(File::open(file_path)?);
 
     // Parse buffered stream

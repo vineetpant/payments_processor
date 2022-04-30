@@ -3,6 +3,19 @@ use csv::{ReaderBuilder, Trim};
 use std::collections::HashMap;
 use std::{error::Error, io::Read};
 
+/// Parse csv file data
+///
+/// # Arguments
+///
+/// * `br` - read stream to read csv data
+/// 
+/// # Returns
+/// 
+/// * HashMap<u16, Vec<u32>>, - mapping of client with transactions(deposit/withdrawal)
+/// * HashMap<u32, Transaction>, - mapping of txn id with transactions(deposit/withdrawal)
+/// * HashMap<u32, Transaction>, - mapping of txn id with transactions(disputed)
+/// * HashMap<u32, Transaction>, - mapping of txn id with transactions(resolved)
+/// * HashMap<u32, Transaction>, - mapping of txn id with transactions(chargedback)
 pub fn parse_csv_data(
     br: Box<dyn Read>,
 ) -> Result<

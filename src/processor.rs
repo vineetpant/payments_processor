@@ -1,6 +1,19 @@
 use crate::types::{ClientAccount, Transaction, TransactionType};
 use std::{collections::HashMap, error::Error};
 
+/// Process CSV transactions and return Client account balances
+///
+/// # Arguments
+///
+/// * HashMap<u16, Vec<u32>>, - mapping of client with transactions(deposit/withdrawal)
+/// * HashMap<u32, Transaction>, - mapping of txn id with transactions(deposit/withdrawal)
+/// * HashMap<u32, Transaction>, - mapping of txn id with transactions(disputed)
+/// * HashMap<u32, Transaction>, - mapping of txn id with transactions(resolved)
+/// * HashMap<u32, Transaction>, - mapping of txn id with transactions(chargedback)
+/// 
+/// # Returns
+/// 
+/// * Vec<ClientAccount>, - Vector of all client accounts with balances
 pub fn process_transactions(
     client_transaction_map: HashMap<u16, Vec<u32>>,
     transaction_map: HashMap<u32, Transaction>,
