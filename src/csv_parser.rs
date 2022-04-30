@@ -1,10 +1,10 @@
 use crate::types::{Transaction, TransactionType};
 use csv::{ReaderBuilder, Trim};
 use std::collections::HashMap;
-use std::{io::Read, error::Error};
+use std::{error::Error, io::Read};
 
 pub fn parse_csv_data(
-    br: Box<dyn Read>
+    br: Box<dyn Read>,
 ) -> Result<
     (
         HashMap<u16, Vec<u32>>,
@@ -15,7 +15,6 @@ pub fn parse_csv_data(
     ),
     Box<dyn Error>,
 > {
-   
     let mut rdr = ReaderBuilder::new()
         .flexible(true)
         .trim(Trim::All)
@@ -34,7 +33,8 @@ pub fn parse_csv_data(
         let trx: Transaction = record?;
 
         match trx.r#type {
-            TransactionType::Deposit | TransactionType::Withdrawal => { // If the transaction is deposit or withdrawal, it should be mapped with client 
+            TransactionType::Deposit | TransactionType::Withdrawal => {
+                // If the transaction is deposit or withdrawal, it should be mapped with client
                 let existing_val = client_transaction_map.get_mut(&trx.client);
 
                 // If client,transaction pair exists add the transaction to existing list of tractions mapped with client id

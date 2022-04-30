@@ -3,7 +3,7 @@ mod csv_parser;
 mod processor;
 pub mod types;
 
-use cmd::{get_app, get_argument_value};
+use cmd::{get_argument_value, get_command};
 use csv_parser::parse_csv_data;
 use processor::process_transactions;
 use types::ClientAccount;
@@ -12,7 +12,7 @@ use std::{error::Error, fs::File, io::BufReader};
 
 fn main() -> Result<(), Box<dyn Error>> {
     // Process command line args
-    let app = get_app()?;
+    let app = get_command()?;
     let matches = app.get_matches();
 
     let file_path = get_argument_value(&matches, "file", None)?;
@@ -56,13 +56,9 @@ fn print_accounts_balance(accounts_balance: Vec<ClientAccount>) {
 // Test trasaction processor
 #[cfg(test)]
 mod tests {
-    use crate::{
-        csv_parser::parse_csv_data,
-        processor::process_transactions,
-    };
+    use crate::{csv_parser::parse_csv_data, processor::process_transactions};
 
-    const SAMPLE_INPUT: &str = 
-    "type, client, tx, amount
+    const SAMPLE_INPUT: &str = "type, client, tx, amount
     deposit, 1, 1, 1.0
     deposit, 2, 2, 2.0
     deposit, 1, 3, 2.0

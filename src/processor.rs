@@ -31,7 +31,8 @@ pub fn process_transactions(
                     total = total + amount;
                 }
                 TransactionType::Withdrawal => {
-                    if amount <= available { // Process withdrawal only if amount is less than or equal to available balance
+                    if amount <= available {
+                        // Process withdrawal only if amount is less than or equal to available balance
                         available = available - amount;
                         total = total - amount;
                     }

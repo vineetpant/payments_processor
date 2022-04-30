@@ -14,16 +14,16 @@ pub fn get_argument_value<'a>(
     }
 }
 
-pub fn get_app<'a>() -> Result<Command<'a>, Box<dyn std::error::Error>> {
+pub fn get_command<'a>() -> Result<Command<'a>, Box<dyn std::error::Error>> {
     Ok(Command::new("processor")
         .version("0.0.1")
         .author("Vineet Pant")
         .about("A simple toy payments engine that reads a series of transactions from a CSV.")
         .setting(AppSettings::DeriveDisplayOrder)
-        .arg(Arg::new("file")
-        .required(true)
-        .help("CSV file path")
-        .takes_value(true)
-    )
-    )
+        .arg(
+            Arg::new("file")
+                .required(true)
+                .help("CSV file path")
+                .takes_value(true),
+        ))
 }
