@@ -10,9 +10,9 @@ use std::{collections::HashMap, error::Error};
 /// * HashMap<u32, Transaction>, - mapping of txn id with transactions(disputed)
 /// * HashMap<u32, Transaction>, - mapping of txn id with transactions(resolved)
 /// * HashMap<u32, Transaction>, - mapping of txn id with transactions(chargedback)
-/// 
+///
 /// # Returns
-/// 
+///
 /// * Vec<ClientAccount>, - Vector of all client accounts with balances
 pub fn process_transactions(
     client_transaction_map: HashMap<u16, Vec<u32>>,
@@ -56,18 +56,24 @@ pub fn process_transactions(
             // Check for dispute
             let tx_dispute = transaction_dispute_map.get(&tx);
             match tx_dispute {
-                Some(_) => {
+                Some(txn_dispute) => {
                     // Update client balance as per disputed transaction
-                    held = held + amount;
-                    available = available - amount;
+                    if txn_dispute.client == client {
+                        // if clients are different, ignore transaction as faulty transaction
+                        held = held + amount;
+                        available = available - amount;
+                    }
 
                     // Check if disputed transaction is resolved
                     let tx_resolved = transaction_resolve_map.get(&tx);
                     match tx_resolved {
-                        Some(_) => {
+                        Some(txn_resolved) => {
                             // If transaction is resolved, update client balance
-                            held = held - amount;
-                            available = available + held;
+                            if txn_resolved.client == client {
+                                // if clients are different, ignore transaction as faulty transaction
+                                held = held - amount;
+                                available = available + amount;
+                            }
                         }
                         None => {}
                     }
@@ -75,11 +81,14 @@ pub fn process_transactions(
                     // Check if disputed transaction is resolved
                     let tx_chargeback = transaction_chargeback_map.get(&tx);
                     match tx_chargeback {
-                        Some(_) => {
+                        Some(txn_chargeback) => {
                             // If transaction is chargeback, update client balance and lock account
-                            held = held - amount;
-                            total = total - amount;
-                            lock = true;
+                            if txn_chargeback.client == client {
+                                // if clients are different, ignore transaction as faulty transaction
+                                held = held - amount;
+                                total = total - amount;
+                                lock = true;
+                            }
                         }
                         None => {}
                     }
